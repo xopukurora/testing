@@ -1,548 +1,716 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kartu Rencana Studi</title>
-    <style>
-        :root {
-            --malachite: #26A69A;
-            --japanese-laurel: #00796B;
-            --astronaut: #0097A7;
-            --my-sin: #FFA726;
-            --gin: #E0F2F1;
-            --de-york: #4DB6AC;
-            --regent-gray: #78909C;
-            --shark: #263238;
-            --colonial-white: #B2DFDB;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Status Validasi KRS</title>
+        <style>
+            :root {
+                --malachite: #26a69a; /* Teal utama */
+                --japanese-laurel: #00796b; /* Teal gelap */
+                --astronaut: #0097a7; /* Cyan */
+                --my-sin: #ffa726; /* Orange hangat */
+                --gin: #e0f2f1; /* Teal sangat muda */
+                --de-york: #4db6ac; /* Teal soft */
+                --regent-gray: #78909c; /* Abu-abu biru */
+                --shark: #263238; /* Hitam kehijauan */
+                --colonial-white: #b2dfdb; /* Teal muda */
+            }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-                sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background: var(--gin);
-            max-width: 100vw;
-            overflow-x: hidden;
-        }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+                    "Droid Sans", "Helvetica Neue", sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background: var(--gin);
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
 
-        #root {
-            min-height: 100vh;
-            max-width: 100vw;
-        }
-
-        @media (min-width: 769px) {
             #root {
+                min-height: 100vh;
+                max-width: 100vw;
+            }
+
+            @media (min-width: 769px) {
+                #root {
+                    max-width: 480px;
+                    margin: 0 auto;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                }
+            }
+
+            .status-validasi-container {
+                min-height: 100vh;
+                background: var(--gin);
+                padding-bottom: 80px;
+            }
+
+            .status-header {
+                background: var(--malachite);
+                color: white;
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            .status-header h1 {
+                font-size: 1.25rem;
+                margin: 0;
+                font-weight: 600;
+            }
+
+            .back-button {
+                background: transparent;
+                border: none;
+                border-radius: 8px;
+                padding: 0.5rem;
+                cursor: pointer;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.3s;
+            }
+
+            .back-button:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .status-banner {
+                background: white;
+                padding: 1.5rem;
+                margin: 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                display: flex;
+                gap: 1rem;
+                border-left: 6px solid;
+            }
+
+            .status-banner.status-pending {
+                border-color: var(--my-sin);
+            }
+
+            .status-icon {
+                flex-shrink: 0;
+                color: var(--my-sin);
+            }
+
+            .status-content {
+                flex: 1;
+            }
+
+            .status-content h2 {
+                font-size: 1.1rem;
+                margin: 0 0 0.35rem 0;
+                color: var(--shark);
+                font-weight: 600;
+            }
+
+            .status-content p {
+                color: var(--regent-gray);
+                margin: 0;
+                font-size: 0.85rem;
+            }
+
+            .submitted-info {
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+                margin-top: 0.75rem;
+                color: var(--regent-gray);
+                font-size: 0.75rem;
+            }
+
+            .status-message {
+                background: rgba(21, 187, 33, 0.1);
+                border: 1.5px solid var(--de-york);
+                padding: 1rem;
+                margin: 0 1rem 1rem;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                color: var(--japanese-laurel);
+                font-size: 0.85rem;
+            }
+
+            .krs-summary-section {
+                background: white;
+                padding: 1rem;
+                margin: 0 1rem 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .krs-summary-section h2 {
+                font-size: 1rem;
+                color: var(--shark);
+                margin: 0 0 1rem 0;
+                font-weight: 600;
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .summary-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 1rem;
+                background: var(--gin);
+                border-radius: 10px;
+            }
+
+            .summary-item svg {
+                color: var(--malachite);
+                flex-shrink: 0;
+            }
+
+            .summary-label {
+                color: var(--regent-gray);
+                font-size: 0.75rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .summary-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--shark);
+            }
+
+            .selected-courses-section {
+                background: white;
+                padding: 1rem;
+                margin: 0 1rem 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .selected-courses-section h2 {
+                font-size: 1rem;
+                color: var(--shark);
+                margin: 0 0 1rem 0;
+                font-weight: 600;
+            }
+
+            .courses-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .course-item {
+                display: flex;
+                gap: 0.875rem;
+                padding: 0.875rem;
+                background: var(--gin);
+                border-radius: 10px;
+                border: 1.5px solid transparent;
+                transition: border-color 0.3s;
+            }
+
+            .course-item:hover {
+                border-color: var(--de-york);
+            }
+
+            .course-number {
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                background: var(--malachite);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 0.85rem;
+                flex-shrink: 0;
+            }
+
+            .course-info {
+                flex: 1;
+            }
+
+            .course-name {
+                font-weight: 600;
+                color: var(--shark);
+                margin-bottom: 0.25rem;
+                font-size: 0.9rem;
+            }
+
+            .course-details {
+                color: var(--regent-gray);
+                font-size: 0.75rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .course-schedule {
+                color: var(--regent-gray);
+                font-size: 0.7rem;
+            }
+
+            .dosen-wali-info {
+                background: white;
+                padding: 1rem;
+                margin: 0 1rem 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .dosen-wali-info h3 {
+                font-size: 1rem;
+                color: var(--shark);
+                margin: 0 0 0.875rem 0;
+                font-weight: 600;
+            }
+
+            .dosen-card {
+                display: flex;
+                align-items: center;
+                gap: 0.875rem;
+                padding: 1rem;
+                background: var(--gin);
+                border-radius: 10px;
+            }
+
+            .dosen-card svg {
+                color: var(--malachite);
+                flex-shrink: 0;
+            }
+
+            .dosen-name {
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: var(--shark);
+                margin-bottom: 0.25rem;
+            }
+
+            .dosen-contact {
+                color: var(--regent-gray);
+                font-size: 0.8rem;
+            }
+
+            .demo-section {
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .demo-button {
+                padding: 0.875rem 1.5rem;
+                background: var(--my-sin);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                box-shadow: 0 2px 8px rgba(255, 184, 31, 0.3);
+            }
+
+            .demo-button:hover {
+                background: #e6a519;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(255, 184, 31, 0.4);
+            }
+
+            .bottom-navigation {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding: 0.5rem 0;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
                 max-width: 480px;
                 margin: 0 auto;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            }
-        }
-
-        .pengisian-krs-container {
-            min-height: 100vh;
-            background: #f5f5f5;
-            padding-bottom: 180px;
-        }
-
-        .krs-header {
-            background: white;
-            color: var(--shark);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .back-button {
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem;
-            cursor: pointer;
-            color: var(--shark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-
-        .back-button:hover {
-            background: #f5f5f5;
-        }
-
-        .krs-header h1 {
-            font-size: 1.1rem;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .krs-info-bar {
-            background: white;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .krs-info-item {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .krs-info-label {
-            font-size: 0.75rem;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .krs-info-value {
-            font-size: 1rem;
-            color: var(--shark);
-            font-weight: 700;
-        }
-
-        .krs-tabs {
-            background: white;
-            display: flex;
-            border-bottom: 2px solid #e0e0e0;
-            position: sticky;
-            top: 60px;
-            z-index: 99;
-        }
-
-        .krs-tab {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background: transparent;
-            color: #666;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .krs-tab-active {
-            color: var(--shark);
-            border-bottom: 3px solid var(--astronaut);
-        }
-
-        .krs-tab-badge {
-            background: var(--my-sin);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        .krs-saved-content {
-            padding: 0.75rem;
-        }
-
-        .krs-saved-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .krs-saved-item {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .krs-saved-item-content {
-            flex: 1;
-        }
-
-        .krs-saved-item h3 {
-            font-size: 0.95rem;
-            color: var(--shark);
-            margin: 0 0 0.25rem 0;
-            font-weight: 700;
-        }
-
-        .krs-saved-code {
-            margin: 0.25rem 0 0 0;
-            font-size: 0.85rem;
-            color: var(--regent-gray);
-        }
-
-        .krs-saved-dosen {
-            margin: 0.35rem 0 0 0;
-            font-size: 0.9rem;
-            color: var(--astronaut);
-            font-weight: 500;
-        }
-
-        .krs-saved-schedule {
-            margin: 0.5rem 0 0 0;
-            font-size: 0.9rem;
-            color: var(--regent-gray);
-        }
-
-        .krs-remove-btn {
-            background: transparent;
-            border: none;
-            color: #f44336;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .krs-remove-btn:hover {
-            background: #ffebee;
-        }
-
-        .krs-bottom-bar {
-            position: fixed;
-            bottom: 60px;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            z-index: 100;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .krs-bottom-info {
-            flex: 1;
-        }
-
-        .krs-sks-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
-        }
-
-        .krs-sks-label {
-            font-size: 0.75rem;
-            color: #666;
-        }
-
-        .krs-sks-value {
-            font-size: 0.85rem;
-            color: var(--shark);
-            font-weight: 700;
-        }
-
-        .krs-submit-btn {
-            background: var(--malachite);
-            color: white;
-            border: none;
-            padding: 0.875rem 2rem;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .krs-submit-btn:hover:not(:disabled) {
-            background: var(--japanese-laurel);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
-        }
-
-        .krs-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .bottom-navigation {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0.5rem 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            transition: all 0.3s;
-            flex: 1;
-            text-decoration: none;
-        }
-
-        .nav-icon {
-            color: var(--regent-gray);
-            transition: color 0.3s;
-        }
-
-        .nav-label {
-            font-size: 0.7rem;
-            color: var(--regent-gray);
-            transition: color 0.3s;
-        }
-
-        .nav-item.active .nav-icon {
-            color: var(--malachite);
-        }
-
-        .nav-item.active .nav-label {
-            color: var(--malachite);
-            font-weight: 600;
-        }
-
-        @media (min-width: 769px) {
-            .krs-header,
-            .krs-bottom-bar,
-            .bottom-navigation {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
-        @media (max-width: 380px) {
-            .krs-info-bar {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
             }
 
-            .krs-bottom-bar {
+            .nav-item {
+                display: flex;
                 flex-direction: column;
-                align-items: stretch;
+                align-items: center;
+                gap: 0.25rem;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+                transition: all 0.3s;
+                flex: 1;
+                text-decoration: none;
             }
 
-            .krs-submit-btn {
-                width: 100%;
+            .nav-icon {
+                color: var(--regent-gray);
+                transition: color 0.3s;
             }
-        }
 
-        svg {
-            width: 20px;
-            height: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div id="root">
-        <div class="pengisian-krs-container">
-            <div class="krs-header">
-                <button class="back-button" onclick="window.history.back()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <h1>Kartu Rencana Studi</h1>
-            </div>
+            .nav-label {
+                font-size: 0.7rem;
+                color: var(--regent-gray);
+                transition: color 0.3s;
+            }
 
-            <div class="krs-info-bar">
-                <div class="krs-info-item">
-                    <span class="krs-info-label">Semester</span>
-                    <span class="krs-info-value">5</span>
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            @media (min-width: 769px) {
+                .status-header,
+                .bottom-navigation {
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <div class="status-validasi-container">
+                <div class="status-header">
+                    <button class="back-button" onclick="window.history.back()">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1>Status Validasi KRS</h1>
                 </div>
-                <div class="krs-info-item">
-                    <span class="krs-info-label">Batas SKS</span>
-                    <span class="krs-info-value">24</span>
-                </div>
-                <div class="krs-info-item">
-                    <span class="krs-info-label">Periode Akademik</span>
-                    <span class="krs-info-value">2025 Ganjil</span>
-                </div>
-            </div>
 
-            <div class="krs-tabs">
-                <button class="krs-tab">
-                    PILIH KELAS
-                </button>
-                <button class="krs-tab krs-tab-active">
-                    KRS TERSIMPAN
-                    <span class="krs-tab-badge">21 SKS</span>
-                </button>
-            </div>
-
-            <div class="krs-saved-content">
-                <div class="krs-saved-list">
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Pemrograman Web</h3>
-                            <p class="krs-saved-code">IF301 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Andi Prasetyo, M.Kom</p>
-                            <p class="krs-saved-schedule">UNIT 1 • Senin, 08:00-10:30</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
+                <div class="status-banner status-pending">
+                    <div class="status-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            width="48"
+                            height="48"
+                        >
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
                     </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Kecerdasan Buatan</h3>
-                            <p class="krs-saved-code">IF302 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Prof. Budi Santoso, Ph.D</p>
-                            <p class="krs-saved-schedule">UNIT 2 • Selasa, 10:30-13:00</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                    <div class="status-content">
+                        <h2>Menunggu Validasi</h2>
+                        <p>KRS Anda sedang menunggu validasi dari Dosen Wali</p>
+                        <div class="submitted-info">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                width="14"
+                                height="14"
+                            >
+                                <rect
+                                    x="3"
+                                    y="4"
+                                    width="18"
+                                    height="18"
+                                    rx="2"
+                                    ry="2"
+                                />
+                                <path d="M16 2v4M8 2v4M3 10h18" />
                             </svg>
-                        </button>
-                    </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Rekayasa Perangkat Lunak</h3>
-                            <p class="krs-saved-code">IF303 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Citra Dewi, M.T</p>
-                            <p class="krs-saved-schedule">UNIT 1 • Rabu, 08:00-10:30</p>
+                            <span>28 Jan 2025</span>
                         </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Sistem Operasi</h3>
-                            <p class="krs-saved-code">IF304 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Dedi Kurniawan, M.Kom</p>
-                            <p class="krs-saved-schedule">UNIT 1 • Kamis, 10:30-13:00</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Jaringan Komputer</h3>
-                            <p class="krs-saved-code">IF305 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Eko Prasetyo, M.T</p>
-                            <p class="krs-saved-schedule">UNIT 2 • Jumat, 08:00-10:30</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Manajemen Proyek IT</h3>
-                            <p class="krs-saved-code">IF306 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Fitri Handayani, M.M</p>
-                            <p class="krs-saved-schedule">UNIT 1 • Selasa, 13:00-15:30</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="krs-saved-item">
-                        <div class="krs-saved-item-content">
-                            <h3>Keamanan Informasi</h3>
-                            <p class="krs-saved-code">IF307 • 3 SKS</p>
-                            <p class="krs-saved-dosen">Dosen: Dr. Gina Amalia, M.Kom</p>
-                            <p class="krs-saved-schedule">UNIT 1 • Rabu, 13:00-15:30</p>
-                        </div>
-                        <button class="krs-remove-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
                     </div>
                 </div>
-            </div>
 
-            <div class="krs-bottom-bar">
-                <div class="krs-bottom-info">
-                    <div class="krs-sks-info">
-                        <span class="krs-sks-label">7 Terpilih, 7 Tersimpan</span>
-                        <span class="krs-sks-value">Tersisa 3 SKS dari 24 SKS</span>
+                <div class="status-message">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        width="18"
+                        height="18"
+                    >
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                    <p>
+                        Harap tunggu, Dosen Wali akan segera memvalidasi KRS
+                        Anda.
+                    </p>
+                </div>
+
+                <div class="krs-summary-section">
+                    <h2>Ringkasan KRS</h2>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                width="24"
+                                height="24"
+                            >
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                <path
+                                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                                />
+                            </svg>
+                            <div>
+                                <div class="summary-label">
+                                    Total Mata Kuliah
+                                </div>
+                                <div class="summary-value">7</div>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                width="24"
+                                height="24"
+                            >
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                <path
+                                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                                />
+                            </svg>
+                            <div>
+                                <div class="summary-label">Total SKS</div>
+                                <div class="summary-value">21</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="krs-submit-btn">
-                    Simpan
-                </button>
-            </div>
 
-            <nav class="bottom-navigation">
-                <a href="/dashboard" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                        <path d="M9 22V12h6v10"/>
-                    </svg>
-                    <span class="nav-label">Beranda</span>
-                </a>
-                <a href="/kalender" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18"/>
-                    </svg>
-                    <span class="nav-label">Kalender</span>
-                </a>
-                <a href="/pengumuman" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
-                    </svg>
-                    <span class="nav-label">Pengumuman</span>
-                </a>
-                <a href="/akun" class="nav-item">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                    <span class="nav-label">Akun</span>
-                </a>
-            </nav>
+                <div class="selected-courses-section">
+                    <h2>Daftar Mata Kuliah</h2>
+                    <div class="courses-list">
+                        <div class="course-item">
+                            <div class="course-number">1</div>
+                            <div class="course-info">
+                                <div class="course-name">Pemrograman Web</div>
+                                <div class="course-details">
+                                    IF301 • Kelas 1 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Senin, 08:00-10:30 • Lab 1
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">2</div>
+                            <div class="course-info">
+                                <div class="course-name">Kecerdasan Buatan</div>
+                                <div class="course-details">
+                                    IF302 • Kelas 2 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Selasa, 10:30-13:00 • Lab 2
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">3</div>
+                            <div class="course-info">
+                                <div class="course-name">
+                                    Rekayasa Perangkat Lunak
+                                </div>
+                                <div class="course-details">
+                                    IF303 • Kelas 1 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Rabu, 08:00-10:30 • R201
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">4</div>
+                            <div class="course-info">
+                                <div class="course-name">Sistem Operasi</div>
+                                <div class="course-details">
+                                    IF304 • Kelas 1 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Kamis, 10:30-13:00 • R301
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">5</div>
+                            <div class="course-info">
+                                <div class="course-name">Jaringan Komputer</div>
+                                <div class="course-details">
+                                    IF305 • Kelas 2 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Jumat, 08:00-10:30 • Lab 3
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">6</div>
+                            <div class="course-info">
+                                <div class="course-name">
+                                    Manajemen Proyek IT
+                                </div>
+                                <div class="course-details">
+                                    IF306 • Kelas 1 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Selasa, 13:00-15:30 • R401
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-item">
+                            <div class="course-number">7</div>
+                            <div class="course-info">
+                                <div class="course-name">
+                                    Keamanan Informasi
+                                </div>
+                                <div class="course-details">
+                                    IF307 • Kelas 1 • 3 SKS
+                                </div>
+                                <div class="course-schedule">
+                                    Rabu, 13:00-15:30 • R402
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dosen-wali-info">
+                    <h3>Dosen Wali</h3>
+                    <div class="dosen-card">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            width="28"
+                            height="28"
+                        >
+                            <path
+                                d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                            />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <div>
+                            <div class="dosen-name">
+                                Dr. Bambang Sutejo, M.Kom
+                            </div>
+                            <div class="dosen-contact">
+                                Gedung A, Lantai 3, Ruang 301
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-section">
+                    <button
+                        class="demo-button"
+                        onclick="alert('Fitur demo: KRS telah disetujui!')"
+                    >
+                        Demo: Simulasi Persetujuan
+                    </button>
+                </div>
+
+                <nav class="bottom-navigation">
+                    <a href="/" class="nav-item">
+                        <svg
+                            class="nav-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                            />
+                            <path d="M9 22V12h6v10" />
+                        </svg>
+                        <span class="nav-label">Beranda</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg
+                            class="nav-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <rect
+                                x="3"
+                                y="4"
+                                width="18"
+                                height="18"
+                                rx="2"
+                                ry="2"
+                            />
+                            <path d="M16 2v4M8 2v4M3 10h18" />
+                        </svg>
+                        <span class="nav-label">Kalender</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg
+                            class="nav-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+                            />
+                        </svg>
+                        <span class="nav-label">Pengumuman</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg
+                            class="nav-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <span class="nav-label">Akun</span>
+                    </a>
+                </nav>
+            </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>
