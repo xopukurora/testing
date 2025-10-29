@@ -1,716 +1,697 @@
+
 <!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Status Validasi KRS</title>
-        <style>
-            :root {
-                --malachite: #26a69a; /* Teal utama */
-                --japanese-laurel: #00796b; /* Teal gelap */
-                --astronaut: #0097a7; /* Cyan */
-                --my-sin: #ffa726; /* Orange hangat */
-                --gin: #e0f2f1; /* Teal sangat muda */
-                --de-york: #4db6ac; /* Teal soft */
-                --regent-gray: #78909c; /* Abu-abu biru */
-                --shark: #263238; /* Hitam kehijauan */
-                --colonial-white: #b2dfdb; /* Teal muda */
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Validasi KRS - Disetujui</title>
+    <style>
+        :root {
+            --malachite: #26A69A;
+            --japanese-laurel: #00796B;
+            --astronaut: #0097A7;
+            --my-sin: #FFA726;
+            --gin: #E0F2F1;
+            --de-york: #4DB6AC;
+            --regent-gray: #78909C;
+            --shark: #263238;
+            --colonial-white: #B2DFDB;
+        }
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-                    "Droid Sans", "Helvetica Neue", sans-serif;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                background: var(--gin);
-                max-width: 100vw;
-                overflow-x: hidden;
-            }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--gin);
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
 
+        #root {
+            min-height: 100vh;
+            max-width: 100vw;
+        }
+
+        @media (min-width: 769px) {
             #root {
-                min-height: 100vh;
-                max-width: 100vw;
-            }
-
-            @media (min-width: 769px) {
-                #root {
-                    max-width: 480px;
-                    margin: 0 auto;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                }
-            }
-
-            .status-validasi-container {
-                min-height: 100vh;
-                background: var(--gin);
-                padding-bottom: 80px;
-            }
-
-            .status-header {
-                background: var(--malachite);
-                color: white;
-                padding: 1rem;
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                position: sticky;
-                top: 0;
-                z-index: 100;
-            }
-
-            .status-header h1 {
-                font-size: 1.25rem;
-                margin: 0;
-                font-weight: 600;
-            }
-
-            .back-button {
-                background: transparent;
-                border: none;
-                border-radius: 8px;
-                padding: 0.5rem;
-                cursor: pointer;
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: background 0.3s;
-            }
-
-            .back-button:hover {
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            .status-banner {
-                background: white;
-                padding: 1.5rem;
-                margin: 1rem;
-                border-radius: 12px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                display: flex;
-                gap: 1rem;
-                border-left: 6px solid;
-            }
-
-            .status-banner.status-pending {
-                border-color: var(--my-sin);
-            }
-
-            .status-icon {
-                flex-shrink: 0;
-                color: var(--my-sin);
-            }
-
-            .status-content {
-                flex: 1;
-            }
-
-            .status-content h2 {
-                font-size: 1.1rem;
-                margin: 0 0 0.35rem 0;
-                color: var(--shark);
-                font-weight: 600;
-            }
-
-            .status-content p {
-                color: var(--regent-gray);
-                margin: 0;
-                font-size: 0.85rem;
-            }
-
-            .submitted-info {
-                display: flex;
-                align-items: center;
-                gap: 0.35rem;
-                margin-top: 0.75rem;
-                color: var(--regent-gray);
-                font-size: 0.75rem;
-            }
-
-            .status-message {
-                background: rgba(21, 187, 33, 0.1);
-                border: 1.5px solid var(--de-york);
-                padding: 1rem;
-                margin: 0 1rem 1rem;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                color: var(--japanese-laurel);
-                font-size: 0.85rem;
-            }
-
-            .krs-summary-section {
-                background: white;
-                padding: 1rem;
-                margin: 0 1rem 1rem;
-                border-radius: 12px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            }
-
-            .krs-summary-section h2 {
-                font-size: 1rem;
-                color: var(--shark);
-                margin: 0 0 1rem 0;
-                font-weight: 600;
-            }
-
-            .summary-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-
-            .summary-item {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                padding: 1rem;
-                background: var(--gin);
-                border-radius: 10px;
-            }
-
-            .summary-item svg {
-                color: var(--malachite);
-                flex-shrink: 0;
-            }
-
-            .summary-label {
-                color: var(--regent-gray);
-                font-size: 0.75rem;
-                margin-bottom: 0.15rem;
-            }
-
-            .summary-value {
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: var(--shark);
-            }
-
-            .selected-courses-section {
-                background: white;
-                padding: 1rem;
-                margin: 0 1rem 1rem;
-                border-radius: 12px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            }
-
-            .selected-courses-section h2 {
-                font-size: 1rem;
-                color: var(--shark);
-                margin: 0 0 1rem 0;
-                font-weight: 600;
-            }
-
-            .courses-list {
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .course-item {
-                display: flex;
-                gap: 0.875rem;
-                padding: 0.875rem;
-                background: var(--gin);
-                border-radius: 10px;
-                border: 1.5px solid transparent;
-                transition: border-color 0.3s;
-            }
-
-            .course-item:hover {
-                border-color: var(--de-york);
-            }
-
-            .course-number {
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                background: var(--malachite);
-                color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                font-size: 0.85rem;
-                flex-shrink: 0;
-            }
-
-            .course-info {
-                flex: 1;
-            }
-
-            .course-name {
-                font-weight: 600;
-                color: var(--shark);
-                margin-bottom: 0.25rem;
-                font-size: 0.9rem;
-            }
-
-            .course-details {
-                color: var(--regent-gray);
-                font-size: 0.75rem;
-                margin-bottom: 0.15rem;
-            }
-
-            .course-schedule {
-                color: var(--regent-gray);
-                font-size: 0.7rem;
-            }
-
-            .dosen-wali-info {
-                background: white;
-                padding: 1rem;
-                margin: 0 1rem 1rem;
-                border-radius: 12px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            }
-
-            .dosen-wali-info h3 {
-                font-size: 1rem;
-                color: var(--shark);
-                margin: 0 0 0.875rem 0;
-                font-weight: 600;
-            }
-
-            .dosen-card {
-                display: flex;
-                align-items: center;
-                gap: 0.875rem;
-                padding: 1rem;
-                background: var(--gin);
-                border-radius: 10px;
-            }
-
-            .dosen-card svg {
-                color: var(--malachite);
-                flex-shrink: 0;
-            }
-
-            .dosen-name {
-                font-size: 0.95rem;
-                font-weight: 600;
-                color: var(--shark);
-                margin-bottom: 0.25rem;
-            }
-
-            .dosen-contact {
-                color: var(--regent-gray);
-                font-size: 0.8rem;
-            }
-
-            .demo-section {
-                text-align: center;
-                padding: 1rem;
-            }
-
-            .demo-button {
-                padding: 0.875rem 1.5rem;
-                background: var(--my-sin);
-                color: white;
-                border: none;
-                border-radius: 10px;
-                font-size: 0.9rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s;
-                box-shadow: 0 2px 8px rgba(255, 184, 31, 0.3);
-            }
-
-            .demo-button:hover {
-                background: #e6a519;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(255, 184, 31, 0.4);
-            }
-
-            .bottom-navigation {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                padding: 0.5rem 0;
-                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-                z-index: 1000;
                 max-width: 480px;
                 margin: 0 auto;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             }
+        }
 
-            .nav-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.25rem;
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 0.5rem;
-                transition: all 0.3s;
-                flex: 1;
-                text-decoration: none;
+        .status-validasi-container {
+            min-height: 100vh;
+            background: var(--gin);
+            padding-bottom: 80px;
+        }
+
+        .status-header {
+            background: var(--malachite);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .status-header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .status-banner {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 1rem;
+            border-left: 6px solid;
+        }
+
+        .status-banner.status-approved {
+            border-color: var(--malachite);
+        }
+
+        .status-icon {
+            flex-shrink: 0;
+            color: var(--malachite);
+        }
+
+        .status-content {
+            flex: 1;
+        }
+
+        .status-content h2 {
+            font-size: 1.1rem;
+            margin: 0 0 0.35rem 0;
+            color: var(--shark);
+            font-weight: 600;
+        }
+
+        .status-content p {
+            color: var(--regent-gray);
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .submitted-info {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.75rem;
+            color: var(--regent-gray);
+            font-size: 0.75rem;
+        }
+
+        .status-message {
+            background: rgba(38, 166, 154, 0.1);
+            border: 1.5px solid var(--malachite);
+            padding: 1rem;
+            margin: 0 1rem 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--japanese-laurel);
+            font-size: 0.85rem;
+        }
+
+        .approval-info {
+            background: white;
+            padding: 1rem;
+            margin: 0 1rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .approval-info h3 {
+            font-size: 1rem;
+            color: var(--shark);
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .approval-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .approval-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: var(--gin);
+            border-radius: 10px;
+        }
+
+        .approval-item svg {
+            color: var(--malachite);
+            flex-shrink: 0;
+        }
+
+        .approval-label {
+            color: var(--regent-gray);
+            font-size: 0.75rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .approval-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--shark);
+        }
+
+        .krs-summary-section {
+            background: white;
+            padding: 1rem;
+            margin: 0 1rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .krs-summary-section h2 {
+            font-size: 1rem;
+            color: var(--shark);
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--gin);
+            border-radius: 10px;
+        }
+
+        .summary-item svg {
+            color: var(--malachite);
+            flex-shrink: 0;
+        }
+
+        .summary-label {
+            color: var(--regent-gray);
+            font-size: 0.75rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--shark);
+        }
+
+        .selected-courses-section {
+            background: white;
+            padding: 1rem;
+            margin: 0 1rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .selected-courses-section h2 {
+            font-size: 1rem;
+            color: var(--shark);
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .courses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .course-item {
+            display: flex;
+            gap: 0.875rem;
+            padding: 0.875rem;
+            background: var(--gin);
+            border-radius: 10px;
+            border: 1.5px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .course-item:hover {
+            border-color: var(--de-york);
+        }
+
+        .course-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--malachite);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-name {
+            font-weight: 600;
+            color: var(--shark);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .course-details {
+            color: var(--regent-gray);
+            font-size: 0.75rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .course-schedule {
+            color: var(--regent-gray);
+            font-size: 0.7rem;
+        }
+
+        .dosen-wali-info {
+            background: white;
+            padding: 1rem;
+            margin: 0 1rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .dosen-wali-info h3 {
+            font-size: 1rem;
+            color: var(--shark);
+            margin: 0 0 0.875rem 0;
+            font-weight: 600;
+        }
+
+        .dosen-card {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            padding: 1rem;
+            background: var(--gin);
+            border-radius: 10px;
+        }
+
+        .dosen-card svg {
+            color: var(--malachite);
+            flex-shrink: 0;
+        }
+
+        .dosen-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--shark);
+            margin-bottom: 0.25rem;
+        }
+
+        .dosen-contact {
+            color: var(--regent-gray);
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            margin: 0 0 1rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--malachite);
+            color: white;
+            box-shadow: 0 2px 8px rgba(38, 166, 154, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--japanese-laurel);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--shark);
+            border: 2px solid var(--gin);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gin);
+            transform: translateY(-2px);
+        }
+
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.5rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .nav-icon {
+            color: var(--regent-gray);
+            transition: color 0.3s;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            color: var(--regent-gray);
+            transition: color 0.3s;
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (min-width: 769px) {
+            .status-header,
+            .bottom-navigation {
+                left: 50%;
+                transform: translateX(-50%);
             }
-
-            .nav-icon {
-                color: var(--regent-gray);
-                transition: color 0.3s;
-            }
-
-            .nav-label {
-                font-size: 0.7rem;
-                color: var(--regent-gray);
-                transition: color 0.3s;
-            }
-
-            svg {
-                width: 20px;
-                height: 20px;
-            }
-
-            @media (min-width: 769px) {
-                .status-header,
-                .bottom-navigation {
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div id="root">
-            <div class="status-validasi-container">
-                <div class="status-header">
-                    <button class="back-button" onclick="window.history.back()">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <h1>Status Validasi KRS</h1>
-                </div>
-
-                <div class="status-banner status-pending">
-                    <div class="status-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            width="48"
-                            height="48"
-                        >
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                    </div>
-                    <div class="status-content">
-                        <h2>Menunggu Validasi</h2>
-                        <p>KRS Anda sedang menunggu validasi dari Dosen Wali</p>
-                        <div class="submitted-info">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                width="14"
-                                height="14"
-                            >
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="18"
-                                    rx="2"
-                                    ry="2"
-                                />
-                                <path d="M16 2v4M8 2v4M3 10h18" />
-                            </svg>
-                            <span>28 Jan 2025</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="status-message">
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        width="18"
-                        height="18"
-                    >
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 16v-4M12 8h.01" />
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="status-validasi-container">
+            <div class="status-header">
+                <button class="back-button" onclick="window.history.back()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
-                    <p>
-                        Harap tunggu, Dosen Wali akan segera memvalidasi KRS
-                        Anda.
-                    </p>
-                </div>
+                </button>
+                <h1>Status Validasi KRS</h1>
+            </div>
 
-                <div class="krs-summary-section">
-                    <h2>Ringkasan KRS</h2>
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                width="24"
-                                height="24"
-                            >
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                                <path
-                                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-                                />
-                            </svg>
-                            <div>
-                                <div class="summary-label">
-                                    Total Mata Kuliah
-                                </div>
-                                <div class="summary-value">7</div>
-                            </div>
-                        </div>
-                        <div class="summary-item">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                width="24"
-                                height="24"
-                            >
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                                <path
-                                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-                                />
-                            </svg>
-                            <div>
-                                <div class="summary-label">Total SKS</div>
-                                <div class="summary-value">21</div>
-                            </div>
-                        </div>
+            <div class="status-banner status-approved">
+                <div class="status-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="status-content">
+                    <h2>KRS Disetujui</h2>
+                    <p>KRS Anda telah disetujui oleh Dosen Wali</p>
+                    <div class="submitted-info">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <path d="M16 2v4M8 2v4M3 10h18"/>
+                        </svg>
+                        <span>Disetujui: 29 Jan 2025</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="selected-courses-section">
-                    <h2>Daftar Mata Kuliah</h2>
-                    <div class="courses-list">
-                        <div class="course-item">
-                            <div class="course-number">1</div>
-                            <div class="course-info">
-                                <div class="course-name">Pemrograman Web</div>
-                                <div class="course-details">
-                                    IF301 • Kelas 1 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Senin, 08:00-10:30 • Lab 1
-                                </div>
-                            </div>
-                        </div>
+            <div class="status-message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <p>Selamat! KRS Anda telah disetujui. Anda dapat mengikuti perkuliahan sesuai jadwal.</p>
+            </div>
 
-                        <div class="course-item">
-                            <div class="course-number">2</div>
-                            <div class="course-info">
-                                <div class="course-name">Kecerdasan Buatan</div>
-                                <div class="course-details">
-                                    IF302 • Kelas 2 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Selasa, 10:30-13:00 • Lab 2
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="course-item">
-                            <div class="course-number">3</div>
-                            <div class="course-info">
-                                <div class="course-name">
-                                    Rekayasa Perangkat Lunak
-                                </div>
-                                <div class="course-details">
-                                    IF303 • Kelas 1 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Rabu, 08:00-10:30 • R201
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="course-item">
-                            <div class="course-number">4</div>
-                            <div class="course-info">
-                                <div class="course-name">Sistem Operasi</div>
-                                <div class="course-details">
-                                    IF304 • Kelas 1 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Kamis, 10:30-13:00 • R301
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="course-item">
-                            <div class="course-number">5</div>
-                            <div class="course-info">
-                                <div class="course-name">Jaringan Komputer</div>
-                                <div class="course-details">
-                                    IF305 • Kelas 2 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Jumat, 08:00-10:30 • Lab 3
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="course-item">
-                            <div class="course-number">6</div>
-                            <div class="course-info">
-                                <div class="course-name">
-                                    Manajemen Proyek IT
-                                </div>
-                                <div class="course-details">
-                                    IF306 • Kelas 1 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Selasa, 13:00-15:30 • R401
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="course-item">
-                            <div class="course-number">7</div>
-                            <div class="course-info">
-                                <div class="course-name">
-                                    Keamanan Informasi
-                                </div>
-                                <div class="course-details">
-                                    IF307 • Kelas 1 • 3 SKS
-                                </div>
-                                <div class="course-schedule">
-                                    Rabu, 13:00-15:30 • R402
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dosen-wali-info">
-                    <h3>Dosen Wali</h3>
-                    <div class="dosen-card">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            width="28"
-                            height="28"
-                        >
-                            <path
-                                d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                            />
-                            <circle cx="12" cy="7" r="4" />
+            <div class="approval-info">
+                <h3>Informasi Persetujuan</h3>
+                <div class="approval-details">
+                    <div class="approval-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
                         </svg>
                         <div>
-                            <div class="dosen-name">
-                                Dr. Bambang Sutejo, M.Kom
-                            </div>
-                            <div class="dosen-contact">
-                                Gedung A, Lantai 3, Ruang 301
-                            </div>
+                            <div class="approval-label">Disetujui Oleh</div>
+                            <div class="approval-value">Dr. Bambang Sutejo, M.Kom</div>
+                        </div>
+                    </div>
+                    <div class="approval-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <path d="M16 2v4M8 2v4M3 10h18"/>
+                        </svg>
+                        <div>
+                            <div class="approval-label">Tanggal Persetujuan</div>
+                            <div class="approval-value">29 Januari 2025, 14:30 WIB</div>
+                        </div>
+                    </div>
+                    <div class="approval-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                        <div>
+                            <div class="approval-label">Catatan</div>
+                            <div class="approval-value">KRS sudah sesuai ketentuan akademik</div>
                         </div>
                     </div>
                 </div>
-
-                <div class="demo-section">
-                    <button
-                        class="demo-button"
-                        onclick="alert('Fitur demo: KRS telah disetujui!')"
-                    >
-                        Demo: Simulasi Persetujuan
-                    </button>
-                </div>
-
-                <nav class="bottom-navigation">
-                    <a href="/" class="nav-item">
-                        <svg
-                            class="nav-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                            />
-                            <path d="M9 22V12h6v10" />
-                        </svg>
-                        <span class="nav-label">Beranda</span>
-                    </a>
-                    <a href="#" class="nav-item">
-                        <svg
-                            class="nav-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="18"
-                                rx="2"
-                                ry="2"
-                            />
-                            <path d="M16 2v4M8 2v4M3 10h18" />
-                        </svg>
-                        <span class="nav-label">Kalender</span>
-                    </a>
-                    <a href="#" class="nav-item">
-                        <svg
-                            class="nav-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
-                            />
-                        </svg>
-                        <span class="nav-label">Pengumuman</span>
-                    </a>
-                    <a href="#" class="nav-item">
-                        <svg
-                            class="nav-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg>
-                        <span class="nav-label">Akun</span>
-                    </a>
-                </nav>
             </div>
+
+            <div class="krs-summary-section">
+                <h2>Ringkasan KRS</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        <div>
+                            <div class="summary-label">Total Mata Kuliah</div>
+                            <div class="summary-value">7</div>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        <div>
+                            <div class="summary-label">Total SKS</div>
+                            <div class="summary-value">21</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selected-courses-section">
+                <h2>Daftar Mata Kuliah</h2>
+                <div class="courses-list">
+                    <div class="course-item">
+                        <div class="course-number">1</div>
+                        <div class="course-info">
+                            <div class="course-name">Pemrograman Web</div>
+                            <div class="course-details">IF301 • Kelas 1 • 3 SKS</div>
+                            <div class="course-schedule">Senin, 08:00-10:30 • Lab 1</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">2</div>
+                        <div class="course-info">
+                            <div class="course-name">Kecerdasan Buatan</div>
+                            <div class="course-details">IF302 • Kelas 2 • 3 SKS</div>
+                            <div class="course-schedule">Selasa, 10:30-13:00 • Lab 2</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">3</div>
+                        <div class="course-info">
+                            <div class="course-name">Rekayasa Perangkat Lunak</div>
+                            <div class="course-details">IF303 • Kelas 1 • 3 SKS</div>
+                            <div class="course-schedule">Rabu, 08:00-10:30 • R201</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">4</div>
+                        <div class="course-info">
+                            <div class="course-name">Sistem Operasi</div>
+                            <div class="course-details">IF304 • Kelas 1 • 3 SKS</div>
+                            <div class="course-schedule">Kamis, 10:30-13:00 • R301</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">5</div>
+                        <div class="course-info">
+                            <div class="course-name">Jaringan Komputer</div>
+                            <div class="course-details">IF305 • Kelas 2 • 3 SKS</div>
+                            <div class="course-schedule">Jumat, 08:00-10:30 • Lab 3</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">6</div>
+                        <div class="course-info">
+                            <div class="course-name">Manajemen Proyek IT</div>
+                            <div class="course-details">IF306 • Kelas 1 • 3 SKS</div>
+                            <div class="course-schedule">Selasa, 13:00-15:30 • R401</div>
+                        </div>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-number">7</div>
+                        <div class="course-info">
+                            <div class="course-name">Keamanan Informasi</div>
+                            <div class="course-details">IF307 • Kelas 1 • 3 SKS</div>
+                            <div class="course-schedule">Rabu, 13:00-15:30 • R402</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dosen-wali-info">
+                <h3>Dosen Wali</h3>
+                <div class="dosen-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <div>
+                        <div class="dosen-name">Dr. Bambang Sutejo, M.Kom</div>
+                        <div class="dosen-contact">Gedung A, Lantai 3, Ruang 301</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="window.print()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <polyline points="6 9 6 2 18 2 18 9"/>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                        <rect x="6" y="14" width="12" height="8"/>
+                    </svg>
+                    Cetak KRS
+                </button>
+                <button class="btn-primary" onclick="alert('Download KRS berhasil!')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download PDF
+                </button>
+            </div>
+
+            <nav class="bottom-navigation">
+                <a href="/" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        <path d="M9 22V12h6v10"/>
+                    </svg>
+                    <span class="nav-label">Beranda</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                    </svg>
+                    <span class="nav-label">Kalender</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+                    </svg>
+                    <span class="nav-label">Pengumuman</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span class="nav-label">Akun</span>
+                </a>
+            </nav>
         </div>
-    </body>
+    </div>
+</body>
 </html>
