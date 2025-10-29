@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Rencana Studi - Pilih Kelas</title>
+    <style>
+        :root {
+            --malachite: #26A69A;
+            --japanese-laurel: #00796B;
+            --astronaut: #0097A7;
+            --my-sin: #FFA726;
+            --gin: #E0F2F1;
+            --de-york: #4DB6AC;
+            --regent-gray: #78909C;
+            --shark: #263238;
+            --colonial-white: #B2DFDB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--gin);
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        #root {
+            min-height: 100vh;
+            max-width: 100vw;
+        }
+
+        @media (min-width: 769px) {
+            #root {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .pengisian-krs-container {
+            min-height: 100vh;
+            background: #f5f5f5;
+            padding-bottom: 180px;
+        }
+
+        .krs-header {
+            background: white;
+            color: var(--shark);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: var(--shark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #f5f5f5;
+        }
+
+        .krs-header h1 {
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .krs-info-bar {
+            background: white;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .krs-info-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .krs-info-label {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .krs-info-value {
+            font-size: 1rem;
+            color: var(--shark);
+            font-weight: 700;
+        }
+
+        .krs-tabs {
+            background: white;
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 60px;
+            z-index: 99;
+        }
+
+        .krs-tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .krs-tab-active {
+            color: var(--shark);
+            border-bottom: 3px solid var(--astronaut);
+        }
+
+        .krs-tab-badge {
+            background: var(--my-sin);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .krs-search-bar {
+            padding: 1rem;
+            background: white;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .krs-search-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #f5f5f5;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+
+        .krs-search-input svg {
+            color: #999;
+        }
+
+        .krs-search-input input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .krs-auto-select-btn {
+            background: var(--malachite);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .krs-auto-select-btn:hover {
+            background: var(--japanese-laurel);
+        }
+
+        .krs-filter-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .krs-courses-content {
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .krs-semester-group {
+            margin-bottom: 24px;
+        }
+
+        .krs-semester-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: black;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .krs-course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: 12px;
+        }
+
+        .krs-course-header {
+            margin-bottom: 0.75rem;
+        }
+
+        .krs-course-title h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--shark);
+            font-weight: 600;
+        }
+
+        .krs-course-code {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .krs-course-dosen {
+            color: #444;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .krs-class-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .krs-class-option {
+            padding: 0.875rem;
+            background: #fafafa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            opacity: 0.6;
+        }
+
+        .krs-class-option:hover {
+            background: #f5f5f5;
+            opacity: 0.8;
+        }
+
+        .krs-selected {
+            background: #e3f2fd !important;
+            border-color: #2196F3 !important;
+            opacity: 1 !important;
+        }
+
+        .krs-class-main {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .krs-checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .krs-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2196F3;
+        }
+
+        .krs-check-icon {
+            color: var(--malachite);
+            min-width: 24px;
+        }
+
+        .krs-class-info {
+            flex: 1;
+        }
+
+        .krs-class-name {
+            font-size: 0.85rem;
+            color: var(--shark);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .krs-class-meta {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .krs-bottom-bar {
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .krs-bottom-info {
+            flex: 1;
+        }
+
+        .krs-sks-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .krs-sks-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .krs-sks-value {
+            font-size: 0.85rem;
+            color: var(--shark);
+            font-weight: 700;
+        }
+
+        .krs-submit-btn {
+            background: var(--malachite);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .krs-submit-btn:hover {
+            background: var(--japanese-laurel);
+        }
+
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.5rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .nav-icon {
+            color: var(--regent-gray);
+            transition: color 0.3s;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            color: var(--regent-gray);
+            transition: color 0.3s;
+        }
+
+        @media (min-width: 769px) {
+            .krs-header,
+            .krs-bottom-bar,
+            .bottom-navigation {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="pengisian-krs-container">
+            <div class="krs-header">
+                <button class="back-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1>Kartu Rencana Studi</h1>
+            </div>
+
+            <div class="krs-info-bar">
+                <div class="krs-info-item">
+                    <span class="krs-info-label">Semester</span>
+                    <span class="krs-info-value">5</span>
+                </div>
+                <div class="krs-info-item">
+                    <span class="krs-info-label">Batas SKS</span>
+                    <span class="krs-info-value">24</span>
+                </div>
+                <div class="krs-info-item">
+                    <span class="krs-info-label">Periode Akademik</span>
+                    <span class="krs-info-value">2025 Ganjil</span>
+                </div>
+            </div>
+
+            <div class="krs-tabs">
+                <button class="krs-tab krs-tab-active">
+                    PILIH KELAS
+                </button>
+                <button class="krs-tab">
+                    KRS TERSIMPAN
+                    <span class="krs-tab-badge">21 SKS</span>
+                </button>
+            </div>
+
+            <div class="krs-search-bar">
+                <div class="krs-search-input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <input type="text" placeholder="Cari mata kuliah..." />
+                </div>
+                <button class="krs-auto-select-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span>Pilih Otomatis</span>
+                </button>
+                <button class="krs-filter-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="krs-courses-content">
+                <div class="krs-semester-group">
+                    <h2 class="krs-semester-title">Semester 5</h2>
+
+                    <!-- Pemrograman Web Lanjut -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Pemrograman Web Lanjut</h3>
+                                <p class="krs-course-code">IF301 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Dr. Ahmad Fauzi, M.Kom</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Senin 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 1 • Mahasiswa: 28/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Selasa 10:30-13:00</div>
+                                        <div class="krs-class-meta">Ruang Lab 2 • Mahasiswa: 30/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 3 • Rabu 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 1 • Mahasiswa: 25/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basis Data Terdistribusi -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Basis Data Terdistribusi</h3>
+                                <p class="krs-course-code">IF302 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Prof. Siti Nurhaliza, M.T</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Senin 10:30-13:00</div>
+                                        <div class="krs-class-meta">Ruang R201 • Mahasiswa: 32/35</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Kamis 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang R202 • Mahasiswa: 30/35</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sistem Operasi Lanjut -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Sistem Operasi Lanjut</h3>
+                                <p class="krs-course-code">IF303 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Budi Santoso, S.Kom, M.Sc</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Rabu 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang R301 • Mahasiswa: 27/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Jumat 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang R302 • Mahasiswa: 29/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jaringan Komputer Lanjut -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Jaringan Komputer Lanjut</h3>
+                                <p class="krs-course-code">IF304 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Rina Wati, M.Kom</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Selasa 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 3 • Mahasiswa: 26/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Kamis 10:30-13:00</div>
+                                        <div class="krs-class-meta">Ruang Lab 3 • Mahasiswa: 28/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keamanan Siber -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Keamanan Siber</h3>
+                                <p class="krs-course-code">IF401 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Dr. Hendra Wijaya, M.Kom</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Senin 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang R401 • Mahasiswa: 20/25</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Rabu 10:30-13:00</div>
+                                        <div class="krs-class-meta">Ruang R402 • Mahasiswa: 22/25</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Machine Learning -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Machine Learning</h3>
+                                <p class="krs-course-code">IF402 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Prof. Lina Marlina, Ph.D</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Selasa 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 4 • Mahasiswa: 25/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Kamis 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 4 • Mahasiswa: 27/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Programming -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Mobile Programming</h3>
+                                <p class="krs-course-code">IF404 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Dewi Lestari, S.Kom, M.Kom</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option krs-selected">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <svg class="krs-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                            <polyline points="22 4 12 14.01 9 11.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Senin 10:30-13:00</div>
+                                        <div class="krs-class-meta">Ruang Lab 6 • Mahasiswa: 24/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Kamis 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 6 • Mahasiswa: 26/30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pengolahan Citra Digital -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Pengolahan Citra Digital</h3>
+                                <p class="krs-course-code">IF403 • 3 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Drs. Agus Purnomo, M.T</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Rabu 13:00-15:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 5 • Mahasiswa: 18/25</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 2 • Jumat 08:00-10:30</div>
+                                        <div class="krs-class-meta">Ruang Lab 5 • Mahasiswa: 20/25</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Computing -->
+                    <div class="krs-course-card">
+                        <div class="krs-course-header">
+                            <div class="krs-course-title">
+                                <h3>Cloud Computing</h3>
+                                <p class="krs-course-code">IF405 • 2 SKS • Semester 5</p>
+                                <p class="krs-course-dosen">Dosen: Muhammad Yusuf, M.Sc</p>
+                            </div>
+                        </div>
+                        <div class="krs-class-options">
+                            <div class="krs-class-option">
+                                <div class="krs-class-main">
+                                    <div class="krs-checkbox-wrapper">
+                                        <input type="checkbox" class="krs-checkbox" />
+                                    </div>
+                                    <div class="krs-class-info">
+                                        <div class="krs-class-name">UNIT 1 • Jumat 10:30-12:30</div>
+                                        <div class="krs-class-meta">Ruang R501 • Mahasiswa: 15/25</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="krs-bottom-bar">
+                <div class="krs-bottom-info">
+                    <div class="krs-sks-info">
+                        <span class="krs-sks-label">7 Terpilih, 7 Tersimpan</span>
+                        <span class="krs-sks-value">Tersisa 3 SKS dari 24 SKS</span>
+                    </div>
+                </div>
+                <button class="krs-submit-btn">
+                    Simpan
+                </button>
+            </div>
+
+            <nav class="bottom-navigation">
+                <a href="/dashboard" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        <path d="M9 22V12h6v10"/>
+                    </svg>
+                    <span class="nav-label">Beranda</span>
+                </a>
+                <a href="/kalender" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                    </svg>
+                    <span class="nav-label">Kalender</span>
+                </a>
+                <a href="/pengumuman" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+                    </svg>
+                    <span class="nav-label">Pengumuman</span>
+                </a>
+                <a href="/akun" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span class="nav-label">Akun</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
